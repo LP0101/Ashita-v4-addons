@@ -21,7 +21,7 @@
 
 addon.name     = 'chains';
 addon.author   = 'Sippius - Original Ashita-v3 skillchains by Ivaar';
-addon.version  = '0.9';
+addon.version  = '0.9.1';
 addon.desc     = 'Display current skillchain options.';
 
 require('common');
@@ -989,9 +989,11 @@ ashita.events.register('d3d_present', 'present_cb', function ()
 
         if (imgui.Begin('chains', nil, flags)) then
 
-            if render then
-                imgui.SetWindowFontScale(chains.settings.font_scale)
+            -- Apply font scale. ImGui 1.92 (Ashita v4.30) removed SetWindowFontScale,
+            -- so scale by pushing the current font at a new pixel size instead.
+            imgui.PushFont(imgui.GetFont(), imgui.GetFontSize() * chains.settings.font_scale);
 
+            if render then
                 local timediff = now-targetTable[targetId].ts;
                 local timer = targetTable[targetId].dur-timediff;
 
@@ -1056,7 +1058,6 @@ ashita.events.register('d3d_present', 'present_cb', function ()
                     end
                 end
             elseif chains.visible then
-                imgui.SetWindowFontScale(chains.settings.font_scale)
                 imgui.Text('');
                 imgui.Text('                 --- Chains ---                 ');
                 imgui.Text('         Click and drag to move display         ');
@@ -1069,6 +1070,8 @@ ashita.events.register('d3d_present', 'present_cb', function ()
 
             -- store current window position
             chains.settings.position_x, chains.settings.position_y = imgui.GetWindowPos();
+
+            imgui.PopFont();
         end
         imgui.End();
     end
