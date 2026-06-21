@@ -21,7 +21,7 @@
 
 addon.name     = 'chains';
 addon.author   = 'Sippius - Original Ashita-v3 skillchains by Ivaar';
-addon.version  = '0.8';
+addon.version  = '0.9';
 addon.desc     = 'Display current skillchain options.';
 
 require('common');
@@ -987,7 +987,7 @@ ashita.events.register('d3d_present', 'present_cb', function ()
             imgui.SetNextWindowPos({ chains.settings.position_x, chains.settings.position_y }, ImGuiCond_Appearing, { 0, 0 });
         end
 
-        if (imgui.Begin('chains', true, flags)) then
+        if (imgui.Begin('chains', nil, flags)) then
 
             if render then
                 imgui.SetWindowFontScale(chains.settings.font_scale)
